@@ -25,7 +25,7 @@ The Contact Management System is a Lightning Web Component (LWC) that provides a
 1. **Clone the Repository**
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/JheisonVR/ContactManagemenSystemLWC.git
     cd ContactsWebComponent
     ```
 
