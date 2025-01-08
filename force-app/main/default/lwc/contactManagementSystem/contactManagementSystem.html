@@ -1,0 +1,88 @@
+<template>
+    <lightning-card title="Contact list" icon-name="standard:action_list_component">
+        <lightning-layout horizontal-align="spread" class="slds-m-bottom_small slds-align_absolute-center">
+            <lightning-layout-item padding="around-small" flexibility="grow">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-grow">
+                        <lightning-input 
+                            label="Filter by name" 
+                            variant="label-hidden" 
+                            type="text" 
+                            value={keyWord} 
+                            onchange={handleInputSearchChange} 
+                            placeholder="Type the name"
+                            class="slds-input_stretch">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-shrink">
+                        <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Clear" onclick={handleClearInput}>
+                            <lightning-icon icon-name="utility:close" alternative-text="Clear" size="x-small"></lightning-icon>
+                            <span class="slds-assistive-text">Clear</span>
+                        </button>
+                    </div>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item  padding="around-small">
+                <lightning-button label="Add Contact" variant="brand-outline" onclick={handleOpenModal}></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <lightning-button label="Bulk Delete" onclick={handleBulkDeleteContacts} variant="destructive"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <div class="slds-m-around_medium">
+            <template if:true={contact.data}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={contact.data}
+                    columns={columns}
+                    onsave={handleUpdateContacts}
+                    draft-values={draftValues}
+                    onrowaction={handleRowAction}
+                    onrowselection={mapSelectedRows}
+                >
+                </lightning-datatable>
+
+                <template if:true={modalOpen}>
+                    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open slds-p-around_small slds-m-around_small" >
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseModal}>
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 class="slds-modal__title">Create Contact</h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-medium">
+                                
+                                <lightning-record-edit-form object-api-name="Contact" onsuccess={handleSuccess} class="slds-p-around_medium slds-card">
+                                    <div class="slds-grid slds-wrap slds-gutters">
+                                        <div class="slds-col slds-size_1-of-2 slds-p-horizontal_small">
+                                            <lightning-input-field field-name="FirstName" name="FirstName" onchange={handleInputChange}></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-p-horizontal_small">
+                                            <lightning-input-field field-name="LastName" name="LastName" onchange={handleInputChange}></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-p-horizontal_small">
+                                            <lightning-input-field field-name="Email" name="Email" onchange={handleInputChange}></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-p-horizontal_small">
+                                            <lightning-input-field field-name="Phone" name="Phone" onchange={handleInputChange}></lightning-input-field>
+                                        </div>
+                                    </div>
+                                    <div class="slds-m-top_medium slds-text-align_right">
+                                        <lightning-button type="button" label="Create" class="slds-m-right_small" variant="brand" onclick={handleSubmitForm}></lightning-button>
+                                        <lightning-button type="button" label="Cancel" class="slds-m-right_small" variant="neutral" onclick={handleCloseModal}></lightning-button>
+                                    </div>
+                                </lightning-record-edit-form>
+
+                            </div>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" ></div>
+
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
